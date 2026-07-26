@@ -48,31 +48,12 @@ func main() {
 		Description += line
 	}
 	fmt.Printf("desc: %v", Description)
-	/*
-		timeLayout := "2006-01-02 15:04"
-
-		fmt.Printf("Enter start time (%s): \n", timeLayout)
-		scanner.Scan()
-		startTimeStr := scanner.Text()
-		startTime, err := time.ParseInLocation(timeLayout, startTimeStr, time.Local)
-		if err != nil {
-			log.Fatalf("Invalid start time format: %v", err)
-		}
-
-		fmt.Printf("Enter end time (%s): \n", timeLayout)
-		scanner.Scan()
-		endTimeStr := scanner.Text()
-		endTime, err := time.ParseInLocation(timeLayout, endTimeStr, time.Local)
-		if err != nil {
-			log.Fatalf("Invalid end time format: %v", err)
-		}
-	*/
 
 	w := when.New(nil)
 	w.Add(en.All...)
 	w.Add(common.All...)
 
-	fmt.Println("Enter start time (e.g., 'tomorrow at 8am', 'next monday 15:00', or '26 Jul 8am'):")
+	fmt.Println("\nEnter start time (e.g., 'tomorrow at 8am', 'next monday 15:00', or '26 Jul 8am'):")
 	scanner.Scan()
 	startTimeStr := scanner.Text()
 
@@ -95,7 +76,7 @@ func main() {
 	}
 	endTime := endResult.Time
 
-	event := cal.AddEvent(fmt.Sprintf("%d-%s@adenda.local", time.Now().UnixNano()))
+	event := cal.AddEvent(fmt.Sprintf("%d@adenda.local", time.Now().UnixNano()))
 	event.SetSummary(eventName)
 	event.SetDescription(Description)
 	event.SetStartAt(startTime)
