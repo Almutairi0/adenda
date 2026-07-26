@@ -45,7 +45,7 @@ func main() {
 		if line == "" {
 			break
 		}
-		Description += line + "\n"
+		Description += line
 	}
 	fmt.Printf("desc: %v", Description)
 	/*
