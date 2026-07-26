@@ -10,9 +10,11 @@ import (
 	//"log"
 	"os"
 	//"strings"
-	"time"
-
 	ics "github.com/arran4/golang-ical"
+	"github.com/olebedev/when"
+	"github.com/olebedev/when/rules/common"
+	"github.com/olebedev/when/rules/en"
+	"time"
 )
 
 func main() {
@@ -46,24 +48,52 @@ func main() {
 		Description += line + "\n"
 	}
 	fmt.Printf("desc: %v", Description)
+	/*
+		timeLayout := "2006-01-02 15:04"
 
-	timeLayout := "2006-01-02 15:04"
+		fmt.Printf("Enter start time (%s): \n", timeLayout)
+		scanner.Scan()
+		startTimeStr := scanner.Text()
+		startTime, err := time.ParseInLocation(timeLayout, startTimeStr, time.Local)
+		if err != nil {
+			log.Fatalf("Invalid start time format: %v", err)
+		}
 
-	fmt.Printf("Enter start time (%s): \n", timeLayout)
+		fmt.Printf("Enter end time (%s): \n", timeLayout)
+		scanner.Scan()
+		endTimeStr := scanner.Text()
+		endTime, err := time.ParseInLocation(timeLayout, endTimeStr, time.Local)
+		if err != nil {
+			log.Fatalf("Invalid end time format: %v", err)
+		}
+	*/
+
+	w := when.New(nil)
+	w.Add(en.All...)
+	w.Add(common.All...)
+
+	fmt.Println("Enter start time (e.g., 'tomorrow at 8am', 'next monday 15:00', or '26 Jul 8am'):")
 	scanner.Scan()
 	startTimeStr := scanner.Text()
-	startTime, err := time.ParseInLocation(timeLayout, startTimeStr, time.Local)
-	if err != nil {
-		log.Fatalf("Invalid start time format: %v", err)
-	}
 
-	fmt.Printf("Enter end time (%s): \n", timeLayout)
+	// Parse relative to right now
+	startResult, err := w.Parse(startTimeStr, time.Now())
+	if err != nil || startResult == nil {
+		log.Fatalf("Could not understand the start time you typed.")
+	}
+	startTime := startResult.Time
+
+	// 2. Get End Time
+	fmt.Println("Enter end time (e.g., 'at 11am', 'in 2 hours'):")
 	scanner.Scan()
 	endTimeStr := scanner.Text()
-	endTime, err := time.ParseInLocation(timeLayout, endTimeStr, time.Local)
-	if err != nil {
-		log.Fatalf("Invalid end time format: %v", err)
+
+	// Parse relative to the START time, not right now!
+	endResult, err := w.Parse(endTimeStr, startTime)
+	if err != nil || endResult == nil {
+		log.Fatalf("Could not understand the end time you typed.")
 	}
+	endTime := endResult.Time
 
 	event := cal.AddEvent(fmt.Sprintf("%d-%s@adenda.local", time.Now().UnixNano()))
 	event.SetSummary(eventName)
