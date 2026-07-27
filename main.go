@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-
+	//	TODO: Make the user decide if he want to create or use exists one.
 	filePath := "/home/darling/Documents/adenda.ics"
 	fileData, err := os.ReadFile(filePath)
 
