@@ -35,8 +35,6 @@ go build -o adenda
 
 Then follow the interactive prompts to add an event.
 
-> **Note:** the path to the `.ics` file is currently hardcoded in `main.go` (`filePath := "/home/darling/Documents/adenda.ics"`). Update this path to point at your own calendar file before building, or adapt the code to accept it as a command-line argument or environment variable.
-
 ## Dependencies
 
 - [github.com/arran4/golang-ical](https://github.com/arran4/golang-ical) — parsing and writing `.ics` calendar files
