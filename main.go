@@ -18,8 +18,14 @@ import (
 )
 
 func main() {
-	//	TODO: Make the user decide if he want to create or use exists one.
-	filePath := "/home/darling/Documents/adenda.ics"
+	//	TODO: let the path be saved.
+	scanner := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("Please tell us the path for your .ics file.(If you don't have one create one then tell us the path.)")
+	fmt.Println("\n Example: /home/user/Documents/adenda.ics")
+	scanner.Scan()
+	filePath := scanner.Text()
+	fmt.Printf("Your File path is: %v", filePath)
 	fileData, err := os.ReadFile(filePath)
 
 	if err != nil {
@@ -30,9 +36,7 @@ func main() {
 		log.Fatalf("Error parsing calendar string: %v\n", err)
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
-
-	fmt.Println("Choose Name of the event")
+	fmt.Println("\nChoose Name of the event")
 	scanner.Scan()
 	eventName := scanner.Text()
 	fmt.Printf("event name: %v", eventName)
